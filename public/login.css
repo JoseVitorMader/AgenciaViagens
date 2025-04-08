@@ -1,0 +1,186 @@
+:root {
+    /* Light Theme */
+    --light-bg: #f5f7fa;
+    --light-primary: #1e88e5;
+    --light-primary-dark: #1565c0;
+    --light-text: #263238;
+    --light-card: #ffffff;
+    --light-border: #e0e0e0;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    --light-hover: #f1f5f9;
+
+    /* Dark Theme */
+    --dark-bg: #121f2f;
+    --dark-primary: #64b5f6;
+    --dark-primary-dark: #42a5f5;
+    --dark-text: #e0e0e0;
+    --dark-card: #1e293b;
+    --dark-border: #2d3748;
+    --dark-shadow: rgba(0, 0, 0, 0.3);
+    --dark-hover: #2d3748;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--light-text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+/* Login container centralizado */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* Card visual do formulário */
+.card {
+    background-color: var(--light-card);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px var(--light-shadow);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+body.dark-mode .card {
+    background-color: var(--dark-card);
+    box-shadow: 0 4px 6px var(--dark-shadow);
+}
+
+/* Títulos */
+h1 {
+    color: var(--light-primary);
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+body.dark-mode h1 {
+    color: var(--dark-primary);
+}
+
+p {
+    font-size: 1rem;
+    color: var(--light-text);
+    margin-bottom: 1.5rem;
+}
+
+body.dark-mode p {
+    color: var(--dark-text);
+}
+
+/* Formulário */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+label {
+    font-weight: 500;
+    color: var(--light-primary-dark);
+}
+
+body.dark-mode label {
+    color: var(--dark-primary);
+}
+
+input {
+    padding: 0.75rem;
+    border: 1px solid var(--light-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: var(--light-card);
+    color: var(--light-text);
+}
+
+body.dark-mode input {
+    border-color: var(--dark-border);
+    background-color: var(--dark-card);
+    color: var(--dark-text);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--light-primary);
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+}
+
+body.dark-mode input:focus {
+    border-color: var(--dark-primary);
+    box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+}
+
+/* Botão */
+button,
+input[type="submit"] {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--light-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+body.dark-mode button,
+body.dark-mode input[type="submit"] {
+    background-color: var(--dark-primary-dark);
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: var(--light-primary-dark);
+    transform: translateY(-1px);
+}
+
+body.dark-mode button:hover,
+body.dark-mode input[type="submit"]:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Link de cadastro */
+.card a {
+    color: var(--light-primary-dark);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+body.dark-mode .card a {
+    color: var(--dark-primary);
+}
+
+.card a:hover {
+    text-decoration: underline;
+}
+
+.card p:last-of-type {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}

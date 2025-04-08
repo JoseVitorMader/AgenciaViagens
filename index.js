@@ -29,9 +29,16 @@ db.connect((err) => {
     }
 });
 
+app.get("/", function(req, res){
+    res.sendFile(__dirname + "/login.html");
+}); 
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname, 'public', 'index.html');
+app.get("/home", function(req, res){
+    res.sendFile(__dirname + "/public/home.html");
+}); 
+
+app.get("/cadastrar", function(req, res){
+    res.sendFile(__dirname + "/public/cadastro.html");
 });
 
 
@@ -499,6 +506,47 @@ app.post('/editar/:id', function(req, res){
         }
     });
 }); 
+
+app.post('/cadastrarUsu', function (req, res){
+
+    // captura e armazenamento dos campos do formulário html
+    const nome = req.body.nome;
+    const email = req.body.email;
+    const senha = req.body.senha;
+
+    const values = [nome, email, senha];
+    const insert = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
+
+    db.query(insert, values, function(err, result,){
+        if (!err) {
+            console.log("Dados Inseridos Com Sucesso!");
+            res.redirect('/');
+        } else {
+            console.log("Não Foi Possivel Inserir os Dados!", err);
+            res.send("Erro!")
+        }
+    })
+});
+
+app.post('/login', function(req, res){
+    const username = req.body.email;
+    const password = req.body.senha;
+    
+    db.query('SELECT * FROM usuarios WHERE email = ? AND senha = ?', [username, password], function(error, results, fields){
+        if (error) {
+            console.error("Erro ao executar a consulta", error);
+            res.status(500).send("Erro interno ao verificar credenciais")
+            return
+        } 
+        if(results.length > 0){
+            res.redirect("/home");
+        } else {
+            res.render('login', { errorMessage: "Credenciais inválidas", username: username});
+            return
+        }
+    });
+}); 
+
 app.listen(3000, () => {
     console.log('Servidor rodando na url http://localhost:3000');
 });
