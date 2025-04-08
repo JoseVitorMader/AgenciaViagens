@@ -103,6 +103,7 @@ app.get("/Listar", function(req, res){
                                             <th> Valor da Viagem </th>
                                             <th> Vagas </th>
                                             <th> Ações </th>
+                                            <th> </th>
                                         </tr>
                                         </thead>
                                         <tbody id="listaViagens"> </tbody>
@@ -114,7 +115,7 @@ app.get("/Listar", function(req, res){
                                                 <td> ${row.preco} </td>
                                                 <td> ${row.vagas} </td>
                                                 <td> <a href="/excluir/${row.id}">Excluir</a> </td>
-                                                
+                                                <td> <a href="/editar/${row.id}">Editar</a> </td>
                                             </tr>
                                             `).join('')}
                                 </table>
@@ -148,7 +149,57 @@ app.get('/excluir/:id', function(req, res){
     res.redirect('/listar');
 })
 
+app.get('/editar/:id', function(req, res){
+    const id = req.params.id;
 
+    connection.query('SELECT * FROM viagens WHERE id = ?', [id], function(err, result){
+        if (err) {
+            console.log('Erro ao editar o produto', err);
+            res.status(500).send('Erro ao editar o produto');
+            return;
+        }
+        res.send(`
+            <html>
+                <head> 
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title> Skyline Viagens ✈ </title>
+                    <link rel="stylesheet" href="./style.css">
+                </head>
+                <body>
+                    <h1> Editar Produto </h1>
+                    <form action="/atualizar/${id}" method="POST">
+                        <input type="text" name="destino" value="${result[0].destino}">
+                        <input type="date" name="data_viagem" value="${result[0].data_viagem}">
+                        <input type="text" name="preco" value="${result[0].preco}">
+                        <input type="number" name="vagas" value="${result[0].vagas}">
+                        <button type="submit"> Atualizar </button>
+                    </form>
+                </body>
+            </html>
+        `);
+    })
+})
+
+app.post('/editar/:id', function(req, res){
+    const id = req.params.id; // Obtém o ID do produto a ser editado da URL
+    const destino = req.body.destino; // Obtém a nova descrição do corpo da requisição
+    const data_viagem = req.body.data_viagem; // Obtém a nova quantidade do corpo da requisição
+    const preco = req.body.preco; // Obtém o novo valor unitário do corpo da requisição
+    const vagas = req.body.vagas; // Obtém a nova quantidade do corpo da requisição
+ 
+    const update = "UPDATE produtos SET destino = ?, data_viagem = ?, preco = ?, vagas = ? WHERE id = ?";
+ 
+    connection.query(update, [destino, data_viagem, preco, vagas, id], function(err, result){
+        if(!err){
+            console.log("Viagem editada com sucesso!");
+            res.redirect('/listar'); // Redireciona para a página de listagem após a edição
+        }else{
+            console.log("Erro ao editar o produto ", err);
+            res.send("Erro")
+        }
+    });
+}); 
 app.listen(3000, () => {
     console.log('Servidor rodando na url http://localhost:3000');
 });
