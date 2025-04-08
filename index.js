@@ -102,6 +102,7 @@ app.get("/Listar", function(req, res){
                                             <th> Data da Viagem </th>
                                             <th> Valor da Viagem </th>
                                             <th> Vagas </th>
+                                            <th> Ações </th>
                                         </tr>
                                         </thead>
                                         <tbody id="listaViagens"> </tbody>
@@ -112,6 +113,8 @@ app.get("/Listar", function(req, res){
                                                 <td> ${row.data_viagem} </td>
                                                 <td> ${row.preco} </td>
                                                 <td> ${row.vagas} </td>
+                                                <td> <a href="/excluir/${row.id}">Excluir</a> </td>
+                                                
                                             </tr>
                                             `).join('')}
                                 </table>
@@ -130,6 +133,20 @@ app.get("/Listar", function(req, res){
         }
     })
 });
+
+app.get('/excluir/:id', function(req, res){
+    const id = req.params.id;
+
+    connection.query('DELETE FROM viagens WHERE id = ?', [id], function(err, result){
+        if (err) {
+            console.log('Erro ao excluir o produto', err);
+            res.status(500).send('Erro ao excluir o produto');
+            return;
+        }
+    })
+    console.log('Produto excluído com sucesso!');
+    res.redirect('/listar');
+})
 
 
 app.listen(3000, () => {
