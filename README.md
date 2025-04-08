@@ -1,38 +1,30 @@
-Skyline Viagens - Gerenciamento de Pacotes de Viagem
 
-Este projeto é um sistema simples para gerenciamento de pacotes de viagem. Ele permite o cadastro e a visualização de viagens armazenadas em um banco de dados MySQL.
+🌆 Skyline Viagens - Gerenciamento de Pacotes de Viagem
+Sistema simples para gerenciamento de pacotes de viagem, permitindo o cadastro e a visualização de viagens armazenadas em um banco de dados MySQL.
 
 📌 Tecnologias Utilizadas
-
-Node.js
-
-Express.js
-
-MySQL (mysql2)
-
-Body-Parser
-
-Cors
-
-HTML, CSS e JavaScript
+- 🟩 Node.js
+- 🚀 Express.js
+- 🛢️ MySQL (mysql2)
+- 📦 Body-Parser
+- 🔄 CORS
+- 🌐 HTML, CSS e JavaScript
 
 🚀 Como Executar o Projeto
 
 1️⃣ Pré-requisitos
-
-Antes de começar, você precisará ter instalado em sua máquina:
-
-Node.js
-
-MySQL
+Antes de começar, certifique-se de ter os seguintes itens instalados:
+- Node.js
+- MySQL
 
 2️⃣ Configuração do Banco de Dados
-
 Certifique-se de que o MySQL está rodando.
 
-Crie um banco de dados chamado agencia_viagens.
+Crie o banco de dados com o seguinte comando:
 
-Execute o seguinte comando SQL para criar a tabela:
+CREATE DATABASE agencia_viagens;
+
+Em seguida, crie a tabela viagens:
 
 CREATE TABLE viagens (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,71 +34,42 @@ CREATE TABLE viagens (
     vagas INT NOT NULL
 );
 
-Altere as credenciais do banco de dados no arquivo server.js, se necessário.
+⚠️ Importante: Altere as credenciais do banco no arquivo server.js se necessário.
 
 3️⃣ Instalação e Execução do Servidor
 
-Clone este repositório:
-
+# Clone o repositório
 git clone https://github.com/seu-usuario/seu-repositorio.git
 
-Acesse a pasta do projeto:
-
+# Acesse a pasta do projeto
 cd skyline-viagens
 
-Instale as dependências:
-
+# Instale as dependências
 npm install
 
-Inicie o servidor:
-
+# Inicie o servidor
 npm start
 
-O servidor estará rodando em http://localhost:3000
+✅ O servidor estará disponível em: http://localhost:3000
 
-📌 Funcionalidades
+✨ Funcionalidades
+- ✅ Cadastrar viagens via formulário HTML
+- ✅ Listar todas as viagens disponíveis
+- 🌙 Modo escuro para melhor experiência do usuário
 
-📌 Cadastrar viagens via formulário HTML
+📡 Rotas da API
 
-📌 Listar todas as viagens disponíveis
+| Método | Rota       | Descrição                  |
+|--------|------------|----------------------------|
+| GET    | /          | Página inicial             |
+| POST   | /viagens   | Cadastra uma nova viagem   |
+| GET    | /listar    | Lista todas as viagens     |
 
-📌 Modo Escuro para melhor experiência do usuário
+🚧 Melhorias Futuras
+- ✏️ Edição e exclusão de viagens
+- ☁️ Integração com banco de dados na nuvem
+- 🎨 Melhorias no design e usabilidade
 
-📌 Rotas da API
-
-Método
-
-Rota
-
-Descrição
-
-GET
-
-/
-
-Página inicial
-
-POST
-
-/viagens
-
-Cadastra uma nova viagem
-
-GET
-
-/Listar
-
-Lista todas as viagens cadastradas
-
-📌 Melhorias Futuras
-
-🔹 Edição e exclusão de viagens
-
-🔹 Integração com um banco de dados na nuvem
-
-🔹 Melhor design e usabilidade
-
-📌 Autor
-
-Projeto desenvolvido por José Vitor Mader.
-
+👨‍💻 Autor
+Desenvolvido com 💙 por José Vitor Mader
+LinkedIn • GitHub
