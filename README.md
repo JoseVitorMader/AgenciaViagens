@@ -24,7 +24,7 @@ Crie o banco de dados com o seguinte comando:
 
 CREATE DATABASE agencia_viagens;
 
-Em seguida, crie a tabela viagens:
+Em seguida, crie a tabela viagens  e a tabela usuarios:
 
 CREATE TABLE viagens (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,12 +34,19 @@ CREATE TABLE viagens (
     vagas INT NOT NULL
 );
 
+	CREATE TABLE usuarios(
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		nome VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        senha VARCHAR(255) NOT NULL
+	);
+
 ⚠️ Importante: Altere as credenciais do banco no arquivo server.js se necessário.
 
 3️⃣ Instalação e Execução do Servidor
 
 # Clone o repositório
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/JoseVitorMader/AgenciaViagens.git
 
 # Acesse a pasta do projeto
 cd skyline-viagens
@@ -72,4 +79,4 @@ npm start
 
 👨‍💻 Autor
 Desenvolvido com 💙 por José Vitor Mader
-LinkedIn • GitHub
+
