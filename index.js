@@ -138,7 +138,7 @@ app.get("/Listar", function(req, res){
 app.get('/excluir/:id', function(req, res){
     const id = req.params.id;
 
-    connection.query('DELETE FROM viagens WHERE id = ?', [id], function(err, result){
+    db.query('DELETE FROM viagens WHERE id = ?', [id], function(err, result){
         if (err) {
             console.log('Erro ao excluir o produto', err);
             res.status(500).send('Erro ao excluir o produto');
@@ -152,7 +152,7 @@ app.get('/excluir/:id', function(req, res){
 app.get('/editar/:id', function(req, res){
     const id = req.params.id;
 
-    connection.query('SELECT * FROM viagens WHERE id = ?', [id], function(err, result){
+    db.query('SELECT * FROM viagens WHERE id = ?', [id], function(err, result){
         if (err) {
             console.log('Erro ao editar o produto', err);
             res.status(500).send('Erro ao editar o produto');
@@ -164,17 +164,316 @@ app.get('/editar/:id', function(req, res){
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title> Skyline Viagens ✈ </title>
-                    <link rel="stylesheet" href="./style.css">
+                    <style>
+                    :root {
+                        /* Light Theme */
+                        --light-bg: #f5f7fa;
+                        --light-primary: #1e88e5;
+                        --light-primary-dark: #1565c0;
+                        --light-text: #263238;
+                        --light-card: #ffffff;
+                        --light-border: #e0e0e0;
+                        --light-shadow: rgba(0, 0, 0, 0.1);
+                        --light-hover: #f1f5f9;
+
+                        /* Dark Theme */
+                        --dark-bg: #121f2f;
+                        --dark-primary: #64b5f6;
+                        --dark-primary-dark: #42a5f5;
+                        --dark-text: #e0e0e0;
+                        --dark-card: #1e293b;
+                        --dark-border: #2d3748;
+                        --dark-shadow: rgba(0, 0, 0, 0.3);
+                        --dark-hover: #2d3748;
+                    }
+
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        transition: background-color 0.3s ease, color 0.3s ease;
+                    }
+
+                    body {
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        background-color: var(--light-bg);
+                        color: var(--light-text);
+                        line-height: 1.6;
+                        min-height: 100vh;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        padding: 2rem;
+                    }
+
+                    body.dark-mode {
+                        background-color: var(--dark-bg);
+                        color: var(--dark-text);
+                    }
+
+                    .header {
+                        width: 100%;
+                        max-width: 1200px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 2rem;
+                    }
+
+                    .theme-toggle {
+                        background: var(--light-primary);
+                        color: white;
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+
+                    body.dark-mode .theme-toggle {
+                        background: var(--dark-primary-dark);
+                    }
+
+                    .theme-toggle:hover {
+                        opacity: 0.9;
+                    }
+
+                    .container {
+                        width: 100%;
+                        max-width: 1200px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2rem;
+                    }
+
+                    h1 {
+                        color: var(--light-primary);
+                        font-size: 2.5rem;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    body.dark-mode h1 {
+                        color: var(--dark-primary);
+                    }
+
+                    h2 {
+                        color: var(--light-primary-dark);
+                        font-size: 1.8rem;
+                        margin-bottom: 1rem;
+                    }
+
+                    body.dark-mode h2 {
+                        color: var(--dark-primary);
+                    }
+
+                    .card {
+                        background-color: var(--light-card);
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px var(--light-shadow);
+                        padding: 2rem;
+                        margin-bottom: 1rem;
+                    }
+
+                    body.dark-mode .card {
+                        background-color: var(--dark-card);
+                        box-shadow: 0 4px 6px var(--dark-shadow);
+                    }
+
+                    .form-group {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1.5rem;
+                    }
+
+                    .form-row {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 1rem;
+                    }
+
+                    .input-group {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.5rem;
+                    }
+
+                    label {
+                        font-weight: 500;
+                        color: var(--light-primary-dark);
+                    }
+
+                    body.dark-mode label {
+                        color: var(--dark-primary);
+                    }
+
+                    input {
+                        padding: 0.75rem;
+                        border: 1px solid var(--light-border);
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        background-color: var(--light-card);
+                        color: var(--light-text);
+                    }
+
+                    body.dark-mode input {
+                        border-color: var(--dark-border);
+                        background-color: var(--dark-card);
+                        color: var(--dark-text);
+                    }
+
+                    input:focus {
+                        outline: none;
+                        border-color: var(--light-primary);
+                        box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+                    }
+
+                    body.dark-mode input:focus {
+                        border-color: var(--dark-primary);
+                        box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+                    }
+
+                    button {
+                        padding: 0.75rem 1.5rem;
+                        background-color: var(--light-primary);
+                        color: white;
+                        border: none;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    }
+
+                    body.dark-mode button {
+                        background-color: var(--dark-primary-dark);
+                    }
+
+                    button:hover {
+                        background-color: var(--light-primary-dark);
+                        transform: translateY(-1px);
+                    }
+
+                    body.dark-mode button:hover {
+                        background-color: var(--dark-primary);
+                    }
+
+                    .table-container {
+                        overflow-x: auto;
+                        width: 100%;
+                    }
+
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        background-color: var(--light-card);
+                        box-shadow: 0 4px 6px var(--light-shadow);
+                        border-radius: 8px;
+                        overflow: hidden;
+                    }
+
+                    body.dark-mode table {
+                        background-color: var(--dark-card);
+                        box-shadow: 0 4px 6px var(--dark-shadow);
+                    }
+
+                    thead {
+                        background-color: var(--light-primary);
+                        color: white;
+                    }
+
+                    body.dark-mode thead {
+                        background-color: var(--dark-primary-dark);
+                    }
+
+                    th, td {
+                        padding: 1rem;
+                        text-align: left;
+                        border-bottom: 1px solid var(--light-border);
+                    }
+
+                    body.dark-mode th, 
+                    body.dark-mode td {
+                        border-bottom: 1px solid var(--dark-border);
+                    }
+
+                    th {
+                        font-weight: 600;
+                    }
+
+                    tr:hover {
+                        background-color: var(--light-hover);
+                    }
+
+                    body.dark-mode tr:hover {
+                        background-color: var(--dark-hover);
+                    }
+
+                    @media (max-width: 768px) {
+                        .form-row {
+                            grid-template-columns: 1fr;
+                        }
+                        
+                        th, td {
+                            padding: 0.75rem;
+                        }
+                    }
+                    </style>
                 </head>
                 <body>
+                <header class="header">
+                    <div>
+                        <h1>Skyline Viagens</h1>
+                        <p class="tagline">Gerenciamento de Pacotes de Viagem</p>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i> Modo Escuro
+                    </button>
+                </header>
+                <main>
+                    <section class="card">
                     <h1> Editar Produto </h1>
-                    <form action="/atualizar/${id}" method="POST">
+                    <form action="/editar/${id}" method="POST">
                         <input type="text" name="destino" value="${result[0].destino}">
                         <input type="date" name="data_viagem" value="${result[0].data_viagem}">
                         <input type="text" name="preco" value="${result[0].preco}">
                         <input type="number" name="vagas" value="${result[0].vagas}">
                         <button type="submit"> Atualizar </button>
                     </form>
+                    </section>
+                </main>
+                    <script>
+                    const apiUrl = 'http://localhost:3000';
+
+                    // Sistema de tema escuro/claro 
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const themeToggle = document.getElementById('themeToggle');
+                        const icon = themeToggle.querySelector('i');
+                        
+                        // Verifica preferência do usuário
+                        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                        if (prefersDark) {
+                            document.body.classList.add('dark-mode');
+                            icon.className = 'fas fa-sun';
+                            themeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
+                        }
+                        
+                        themeToggle.addEventListener('click', () => {
+                            document.body.classList.toggle('dark-mode');
+                            
+                            if (document.body.classList.contains('dark-mode')) {
+                                icon.className = 'fas fa-sun';
+                                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
+                            } else {
+                                icon.className = 'fas fa-moon';
+                                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Escuro';
+                            }
+                        });
+                    });
+
+                    </script>
                 </body>
             </html>
         `);
@@ -188,9 +487,9 @@ app.post('/editar/:id', function(req, res){
     const preco = req.body.preco; // Obtém o novo valor unitário do corpo da requisição
     const vagas = req.body.vagas; // Obtém a nova quantidade do corpo da requisição
  
-    const update = "UPDATE produtos SET destino = ?, data_viagem = ?, preco = ?, vagas = ? WHERE id = ?";
+    const update = "UPDATE viagens SET destino = ?, data_viagem = ?, preco = ?, vagas = ? WHERE id = ?";
  
-    connection.query(update, [destino, data_viagem, preco, vagas, id], function(err, result){
+    db.query(update, [destino, data_viagem, preco, vagas, id], function(err, result){
         if(!err){
             console.log("Viagem editada com sucesso!");
             res.redirect('/listar'); // Redireciona para a página de listagem após a edição

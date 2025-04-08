@@ -1,0 +1,22 @@
+<html>
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Skyline Viagens ✈ </title>
+        <link rel="stylesheet" href="/css/style.css">
+        
+    </head>
+    <body>
+        <h1> Editar Produto </h1>
+        <form action="/editar/${id}" method="POST">
+            <input type="text" name="destino" value="${result[0].destino}">
+            <input type="date" name="data_viagem" value="${result[0].data_viagem}">
+            <input type="text" name="preco" value="${result[0].preco}">
+            <input type="number" name="vagas" value="${result[0].vagas}">
+            <button type="submit"> Atualizar </button>
+        </form>
+        <script src = "./script.js"></script>
+        <script src = "./index.js"></script>
+    
+    </body>
+</html>
