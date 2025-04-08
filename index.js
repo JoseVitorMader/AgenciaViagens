@@ -103,7 +103,7 @@ app.get("/Listar", function(req, res){
                                             <th> Valor da Viagem </th>
                                             <th> Vagas </th>
                                             <th> Ações </th>
-                                            <th> </th>
+                                            <th> Ações </th>
                                         </tr>
                                         </thead>
                                         <tbody id="listaViagens"> </tbody>
